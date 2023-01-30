@@ -163,20 +163,38 @@ app.delete("/files/del/:id", (req, res) => {
 
 // show pdf in browsrer
 app.get("/image/:filename", (req, res) => {
-    console.log(req.params.filename);
-    const file = gfs
-        .find({
-            filename: req.params.filename
-        })
-        .toArray((err, files) => {
-            if (!files || files.length === 0) {
-                return res.status(404).json({
-                    err: "no files exist"
-                });
-            };
+    // const file = gfs
+    //     .find({
+    //         filename: req.params.filename
+    //     })
+    //     .toArray((err, files) => {
+    //         if (!files || files.length === 0) {
+    //             return res.status(404).json({
+    //                 err: "no files exist"
+    //             });
+    //         };
 
-            gfs.openDownloadStreamByName(req.params.filename).pipe(res);
-        });
+    //         // gfs.openDownloadStreamByName(req.params.filename).pipe(res);
+    //         res.send("hell")
+
+    //     });
+
+    gfs.find({
+        filename: req.params.filename
+    }).toArray((err, files) => {
+        // check if files
+        if (!files || files.length === 0) {
+            return res.status(404).json({
+                err: "no files exist in"
+            });
+        }
+
+        // res.send("hell")
+        // gfs.openDownloadStreamByName(req.params.filename).pipe(res);
+        gfs.openDownloadStreamByName(req.params.filename).pipe(res);
+        // res.set("Content-Type", "application/pdf");
+
+    });
 });
 
 
