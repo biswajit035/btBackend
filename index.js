@@ -74,6 +74,10 @@ const upload = multer({
 
 
 
+// testing purpose
+app.get('/',(req,res)=>{
+    res.send("Hellow world")
+})
 
 
 
