@@ -5,7 +5,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const { GridFsStorage } = require('multer-gridfs-storage');
-const { GridFSBucket } = require('mongodb');
+// const { GridFSBucket } = require('mongodb');
 const BtechStudentSchema = require("./model/BtechStudentSchema");
 var cors = require('cors')
 require('dotenv').config();
@@ -163,37 +163,21 @@ app.delete("/files/del/:id", (req, res) => {
 
 // show pdf in browsrer
 app.get("/image/:filename", (req, res) => {
-    // const file = gfs
-    //     .find({
-    //         filename: req.params.filename
-    //     })
-    //     .toArray((err, files) => {
-    //         if (!files || files.length === 0) {
-    //             return res.status(404).json({
-    //                 err: "no files exist"
-    //             });
-    //         };
 
-    //         // gfs.openDownloadStreamByName(req.params.filename).pipe(res);
-    //         res.send("hell")
-
-    //     });
 
     gfs.find({
         filename: req.params.filename
-    }).toArray((err, files) => {
+    }).toArray(async(err, files) => {
         // check if files
         if (!files || files.length === 0) {
             return res.status(404).json({
                 err: "no files exist in"
             });
         }
-
-        // res.send("hell")
-        // gfs.openDownloadStreamByName(req.params.filename).pipe(res);
-        gfs.openDownloadStreamByName(req.params.filename).pipe(res);
-        // res.set("Content-Type", "application/pdf");
-
+        
+        const pdf =await gfs.openDownloadStreamByName(req.params.filename);
+        res.setHeader('Content-Type', 'application/pdf');
+        pdf.pipe(res);
     });
 });
 
