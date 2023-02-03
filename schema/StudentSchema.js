@@ -1,7 +1,7 @@
 const { mongoose } = require("mongoose");
 const { Schema } = mongoose
 
-const BtechStudentSchema = new Schema({
+const StudentSchema = new Schema({
     year: {
         type:String,
         required:true
@@ -16,4 +16,4 @@ const BtechStudentSchema = new Schema({
     }
 })
 
-module.exports = BtechStudentSchema;
+module.exports = StudentSchema;
